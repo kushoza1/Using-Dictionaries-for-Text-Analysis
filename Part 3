@@ -1,0 +1,32 @@
+def recommendation(t1, t2):
+    doc_table = dict()
+    word_set = set()
+    os.chdir('docs')
+    fileList = os.listdir()
+    
+    for fname in fileList:
+        fd = open(fname, "r", encoding="utf8")
+        doc_table[fname] = dict()
+        data = fd.read()
+        dataList = data.split()
+        for word in dataList:
+            word_set.add(word)
+            count_word(doc_table[fname], word)
+        fd.close()
+    os.chdir('..')  # return to parent directory
+
+    recT1 = dict()
+    for fname in fileList:
+        if fname == t1:
+            continue
+        sim = similarity(doc_table[fname], doc_table[t1], word_set)
+        recT1[fname] = sim
+        
+    recT2 = dict()
+    for fname in fileList:
+        if fname == t1:
+            continue
+        sim = similarity(doc_table[fname], doc_table[t2], word_set)
+        recT2[fname] = sim
+
+    return [recT1, recT2]

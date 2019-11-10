@@ -1,0 +1,39 @@
+import os
+import math
+
+fileTitles = dict()
+fileTitles['wizard_of_oz.txt'] = 'Wizard of Oz'
+fileTitles['mody_dick.txt'] = 'Moby Dick'
+
+def count_word(table, word):
+    'for the word entry in the table, increment its count or init to 1'
+    if word in table:
+        table[word] += 1
+    else:
+        # initialize count of word to 1
+        table[word] = 1
+
+def analyze():
+    '''read all texts from the docs folder, report similarity comparisons
+        among all pairs'''
+    
+    doc_table = dict()
+    word_set = set()
+    os.chdir('docs')
+    fileList = os.listdir()
+    for fname in fileList:
+        fd = open(fname, "r", encoding="utf8")
+        doc_table[fname] = dict()
+        data = fd.read()
+        dataList = data.split()
+        
+        for word in dataList:
+            word_set.add(word)
+            count_word(doc_table[fname], word)
+
+
+    key_list = list(doc_table[fname].keys())
+    for i in range (100):
+        print(key_list[I].lower().strip("!@#$%^&*()_-+={}[]|:\';<>,./?~`"))
+                
+        fd.close()

@@ -1,0 +1,40 @@
+def aanalyze(t1):
+    '''read all texts from the docs folder, report similarity comparisons
+        among all pairs'''
+    ttable = {'alice_in_wonderland.txt': 'Alice in wonderland', 'dracula.txt': 'Dracula', 'frankenstein.txt': 'Frankenstein','jane_eyre.txt': 'Jane Eyre', 'moby_dick.txt': 'Moby Dick','pride_and_prejudice.txt': 'Pride and Prejudice','tale_of_two_cities.txt': 'Tales of Two Cities', 'udolpho.txt': 'Udolpho', 'wizard_of_oz.txt': 'Wizard of Oz'}
+    #for rect1 in ttable:
+    doc_table = dict()
+    word_set = set()
+    os.chdir('docs')
+    fileList = os.listdir()
+    for fname in fileList:
+        #print("Opening " + fname)
+        fd = open(fname, "r", encoding="utf8")
+        doc_table[fname] = dict()
+        data = fd.read()
+        #print("splitting")
+        dataList = data.split()
+        #print("{} has {} words". format(fname, len(dataList)))
+        for word in dataList:
+            word_set.add(word)
+            count_word(doc_table[fname], word)
+        fd.close()
+    os.chdir('..')  # return to parent directory
+
+    for fname in fileList:
+        for fname2 in fileList:
+            sim = similarity(doc_table[fname], doc_table[fname2], word_set)
+            #print("{:.2f} : {} vs. {}".format(sim, fname, fname2))
+            
+    simscore=0
+    similar=''
+    for fname in fileList:
+        if fname!= t1:
+            sim= similarity(doc_table[fname],doc_table[t1],word_set)
+            if sim>simscore:
+                simscore=sim
+                similar=fname
+    print('Similarity score is: ' + str(simscore))
+    if t1 in ttable:
+        if similar in ttable:
+            print('Recommendation: If you liked ' + ttable[t1] + ' you would like ' + ttable[similar])
